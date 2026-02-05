@@ -2,24 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exp3</title>
+    <title>Registration Form (AJAX)</title>
 </head>
 <body>
     <center>
         <h3>Registration Form</h3>
-        <label">Enter Your  First Name:</label>
-        <input type="text" name="name" id="firstname"><br>
-        <label">Enter Your  Last Name:</label>
-        <input type="text" name="name" id="firstname"><br>
-        <label"> Email:</label>
-        <input type="email" name="" id=""><br>
-        <label">Passward:</label>
-        <input type="password" name="" id=""><br>
-        <label">Gender:</label>
-        <input type="radio" name="Male" id="">
-        <input type="radio" name="Female" id=""><br>
-        <button>Submit</button>
+
+        <form id="regForm">
+            First Name:
+            <input type="text" id="fname" required><br><br>
+
+            Last Name:
+            <input type="text" id="lname" required><br><br>
+
+            Email:
+            <input type="email" id="email" required><br><br>
+
+            Password:
+            <input type="password" id="password" required><br><br>
+
+            Gender:
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female<br><br>
+
+            <button type="submit">Submit</button>
+        </form>
     </center>
+
+    <script>
+        document.getElementById("regForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            var userData = {
+                fname: document.getElementById("fname").value,
+                lname: document.getElementById("lname").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+                gender: document.querySelector('input[name="gender"]:checked').value
+            };
+
+            // AJAX request
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajaxRequest", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // Save data locally (GitHub Pages compatible)
+                    localStorage.setItem("userData", JSON.stringify(userData));
+                    alert("Data saved using AJAX + LocalStorage");
+                }
+            };
+
+            xhr.send(JSON.stringify(userData));
+        });
+    </script>
 </body>
 </html>
